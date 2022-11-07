@@ -1,5 +1,6 @@
 import { FormControl, FormLabel, Input, FormHelperText, Select, VStack, Button } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAddressStore } from '../store/AddressStore';
 
 const AddressForm: React.FC = () => {
 
@@ -7,14 +8,25 @@ const AddressForm: React.FC = () => {
   const [address, setAddress] = useState('');
   const [complement, setComplement] = useState('');
 
+  const setAddressStore = useAddressStore(store => store.setAddress);
+  const addressStore = useAddressStore(store => store.address);
+
+  useEffect(() => {
+    if (addressStore) {
+      setUf(addressStore.uf);
+      setAddress(addressStore.address);
+      setComplement(addressStore.complement ?? '');
+    }
+  }, [addressStore]);
+
   const handleSubmit: React.FormEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    alert(JSON.stringify({
+    setAddressStore({
       uf,
       address,
       complement
-    }))
-  }
+    })
+  };
 
   return <VStack as={'form'} onSubmit={handleSubmit}>
     <FormControl>

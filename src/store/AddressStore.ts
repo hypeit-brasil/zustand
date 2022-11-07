@@ -1,4 +1,4 @@
-import create from "zustand/react";
+import create from "zustand";
 
 interface Address {
   uf: string;
@@ -7,19 +7,12 @@ interface Address {
 }
 
 export interface IAddressStore {
-  address: Address;
+  address: Address | null;
   setAddress: (address: Address) => void
 }
 
-export const addressStoreInitialState: Pick<IAddressStore, 'address'> = {
-  address: {
-    uf: '',
-    address: ''
-  }
-}
-
 export const useAddressStore = create<IAddressStore>(set => ({
-  ...addressStoreInitialState,
+  address: null,
   setAddress: (address) =>
     set({
       address,
