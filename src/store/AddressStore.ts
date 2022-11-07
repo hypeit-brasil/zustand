@@ -1,5 +1,5 @@
 import create from "zustand";
-
+import { persist } from "zustand/middleware";
 interface Address {
   uf: string;
   address: string;
@@ -11,10 +11,16 @@ export interface IAddressStore {
   setAddress: (address: Address) => void
 }
 
-export const useAddressStore = create<IAddressStore>(set => ({
-  address: null,
-  setAddress: (address) =>
-    set({
-      address,
-    }),
-}));
+export const useAddressStore = create(
+  persist<IAddressStore>(set => ({
+    address: null,
+    setAddress: (address) =>
+      set({
+        address,
+      }),
+  }),
+    {
+      name: 'address-store'
+    }
+  )
+);
